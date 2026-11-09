@@ -9,7 +9,7 @@ Raw and processed sequencing data (FASTQ, BAM, BED, bigWig, count matrices) and 
 
 | Data | Repository | Accession |
 |------|------------|-----------|
-| DNA-seq | GEO | GSE_TBD |
+| DNA-seq | GEO | [GSE353840](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE353840) |
 | RNA-seq | GEO | [GSE335756](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE335756) |
 | ONT (nanopore, CpG methylation) | GEO | GSE_TBD |
 | MS proteomics | PRIDE | [PXD069855](https://www.ebi.ac.uk/pride/archive/projects/PXD069855) |
