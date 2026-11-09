@@ -1,0 +1,15 @@
+Status	./../BAM/NPKL_RNA_FANCI_rep1_chm13.star.srt.bam	./../BAM/NPKL_RNA_FANCI_rep2_chm13.star.srt.bam	./../BAM/NPKL_RNA_FANCI_rep3_chm13.star.srt.bam	./../BAM/NPKL_RNA_FANCI_rep4_chm13.star.srt.bam	./../BAM/NPKL_RNA_FANCI_rep5_chm13.star.srt.bam	./../BAM/NPKL_RNA_Input_rep1_chm13.star.srt.bam	./../BAM/NPKL_RNA_Input_rep2_chm13.star.srt.bam	./../BAM/NPKL_RNA_Input_rep3_chm13.star.srt.bam	./../BAM/NPKL_RNA_Input_rep4_chm13.star.srt.bam	./../BAM/NPKL_RNA_Input_rep5_chm13.star.srt.bam
+Assigned	5825129	11365561	6716740	9689440	9130256	6164638	5089020	4208254	4386219	5017733
+Unassigned_Unmapped	0	0	0	0	0	0	0	0	0	0
+Unassigned_Read_Type	0	0	0	0	0	0	0	0	0	0
+Unassigned_Singleton	0	0	0	0	0	0	0	0	0	0
+Unassigned_MappingQuality	0	0	0	0	0	0	0	0	0	0
+Unassigned_Chimera	0	0	0	0	0	0	0	0	0	0
+Unassigned_FragmentLength	0	0	0	0	0	0	0	0	0	0
+Unassigned_Duplicate	0	0	0	0	0	0	0	0	0	0
+Unassigned_MultiMapping	5730660	6407535	9021732	8835812	9622132	2870184	2065724	2069884	2152603	2465757
+Unassigned_Secondary	0	0	0	0	0	0	0	0	0	0
+Unassigned_NonSplit	0	0	0	0	0	0	0	0	0	0
+Unassigned_NoFeatures	475934	988238	1457257	682815	648734	455618	392252	293307	313139	354911
+Unassigned_Overlapping_Length	0	0	0	0	0	0	0	0	0	0
+Unassigned_Ambiguity	0	0	0	0	0	0	0	0	0	0

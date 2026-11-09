@@ -1,0 +1,50 @@
+---
+title: "Intensity of selected speckle proteins after ActD"
+output: html_notebook
+---
+
+Box plots of normalised intensities (FragPipe-Analyst) of selected proteins (SMN1, THRAP3, DDX42, BCLAF1, SRRM2, NOP2, BUD13, RBM17) per condition (DMSO / ActD, NuFANCI / input).
+
+**Input:** `Normalized_matrix.csv` (FragPipe-Analyst, step 01), `experiment_annotation.tsv`.
+**Output:** `Marker_gene_ActD.pdf`.
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+# setwd("path/to/data")  # folder with the input tables (see header)
+library(tidyverse)
+library(RColorBrewer)
+library(dendextend)
+library(viridis)
+library(gridExtra)
+library(grid)
+library(cowplot)
+library(ggpubr)
+library(ggprism)
+```
+
+```{r}
+Norm_Matrix = read_csv("Normalized_matrix.csv")
+annotation = read_tsv("experiment_annotation.tsv")
+```
+```{r}
+cvs_group<- Norm_Matrix %>%
+      tidyr::gather("sample", "Intensity", -Gene, -ProteinID)  %>%
+      dplyr::left_join(.,annotation, by="sample")
+```
+
+```{r fig.height=10, fig.width=44}
+
+ p <- cvs_group %>% filter(Gene == "SMN1" | Gene == "THRAP3" | Gene == "DDX42" | Gene == "BCLAF1" | Gene == "SRRM2"| Gene == "NOP2"| Gene == "BUD13"| Gene == "RBM17") %>% ggboxplot(., x = "condition", y = "Intensity",
+                color = "condition", palette =c("#932191", "#487fab", "#90caf9", "#ce93d8"),
+                add = "jitter") +
+                facet_grid( . ~ Gene, scales = "free") +
+                #theme_prism() +
+                  theme(legend.position = "none",
+                        aspect.ratio = 1,
+                      axis.text.x = element_text(angle = 90, hjust = 1)
+                    )
+ p
+ggsave2("Marker_gene_ActD.pdf")
+
+```
+

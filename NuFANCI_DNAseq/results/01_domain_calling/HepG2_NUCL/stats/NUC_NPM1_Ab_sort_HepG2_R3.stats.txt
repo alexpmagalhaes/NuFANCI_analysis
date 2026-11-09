@@ -1,0 +1,2 @@
+{'Average Size': np.float64(139345.91552481044), 'N50': np.int64(1028000), 'N90': np.int64(60000), 'N10': np.int64(4666000)}
+{'Average distance': 228571.84789859908}

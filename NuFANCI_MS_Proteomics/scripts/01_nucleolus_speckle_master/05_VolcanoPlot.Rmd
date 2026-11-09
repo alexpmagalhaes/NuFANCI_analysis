@@ -1,0 +1,51 @@
+---
+title: "Volcano plots of NuFANCI vs input"
+output:
+  html_document:
+    df_print: paged
+editor_options:
+  chunk_output_type: inline
+---
+
+Volcano plots (EnhancedVolcano) of FragPipe-Analyst differential abundance results.
+
+**Input:** `DE_results.csv` (FragPipe-Analyst).
+**Note:** taken from the 2025-10-19 analysis (`NUCL_HSLiver_HepG2_HCT116_FANCI_DDAplus_20251019`). Example comparison: GFP-NPM1 vs NPM1 antibody NuFANCI sort.
+
+
+```{r message=FALSE, warning=FALSE}
+# setwd("path/to/data")  # folder with DE_results.csv (FragPipe-Analyst)
+library(tidyverse)
+library(EnhancedVolcano)
+```
+
+```{r}
+DE_results = read.csv("DE_results.csv")
+```
+
+```{r fig.height=6, fig.width=6}
+p1 <- EnhancedVolcano(DE_results,
+    lab = DE_results$Gene.Name,
+    x = 'NUCL_GFPNPM1_AB_FANCI_vs_NUCL_NPM1_AB_FANCI_log2.fold.change',
+    y = 'NUCL_GFPNPM1_AB_FANCI_vs_NUCL_NPM1_AB_FANCI_p.adj',
+    title = 'GFP-NPM1 vs NPM1 antibody NuFANCI',
+    subtitle = NULL,
+    caption = NULL,
+    titleLabSize = 10,
+    pCutoff = 0.05,
+    FCcutoff = 1,
+    pointSize = 1.0,
+    labSize = 3,
+    arrowheads = FALSE,
+    col = c('gray50', 'gray50', 'gray50', 'gray50'),
+    colAlpha = 1,
+    axisLabSize = 10,
+    drawConnectors = T,
+    widthConnectors = 0.75,
+    legendPosition = 'top',
+    legendLabSize = 8,
+    legendIconSize = 2.0,
+    border = 'full',
+    boxedLabels = F)
+p1
+```

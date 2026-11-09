@@ -1,0 +1,27 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+library(tidyverse)
+setwd("/Users/magalhae/Desktop/FANCY_DNAcaller/FANCI_DNAseq_T2T_CHM3/NPKL_SAD_genes")
+```
+
+```{r}
+ratio_table <- read_csv("./density_graph_ratio.csv")
+ratio_table <- tibble::rowid_to_column(ratio_table, "index")
+ratio_long <- pivot_longer(ratio_table, !index, names_to = "sets", values_to = "ratio")
+```
+```{r}
+graph <- ggplot(ratio_long, aes(x = ratio, fill = sets)) +
+  geom_density(position = 'identity', alpha = 0.8, adjust = 1) +
+  theme_bw()
+graph
+ggsave("NPKL_SAD_genes_ratio.pdf")
+```
+

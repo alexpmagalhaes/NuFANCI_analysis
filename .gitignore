@@ -1,0 +1,61 @@
+# OS / editor
+.DS_Store
+._*
+*.swp
+.Rhistory
+.RData
+.Rproj.user/
+.ipynb_checkpoints/
+__pycache__/
+
+# Sequencing data (on GEO)
+*.fastq
+*.fastq.gz
+*.fq
+*.fq.gz
+*.sam
+*.bam
+*.bai
+*.cram
+*.crai
+*.bed
+*.bed.gz
+*.bedGraph
+*.bedgraph
+*.bg
+*.bw
+*.bigWig
+*.bigwig
+*.narrowPeak
+*.broadPeak
+*.wig
+*.h5
+*.loom
+*.fa
+*.fasta
+*.fa.gz
+*.gtf
+*.gtf.gz
+*.gff
+*.gff3
+
+# MS proteomics raw data (on PRIDE)
+*.raw
+*.mzML
+*.mzXML
+*.d/
+*.wiff
+*.wiff.scan
+
+# Large intermediates
+*.rds
+*.RDS
+*.rda
+*.pkl
+*.zip
+*.tar
+*.tar.gz
+
+# Small reference annotations are kept
+!*/references/*.gtf
+!*/references/*.SAF

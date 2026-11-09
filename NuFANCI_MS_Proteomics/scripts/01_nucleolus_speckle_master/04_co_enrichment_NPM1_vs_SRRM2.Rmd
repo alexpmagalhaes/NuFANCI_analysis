@@ -1,0 +1,92 @@
+---
+title: "Co-enrichment of nucleolar (NPM1) and speckle (SRRM2) NuFANCI"
+output: html_notebook
+---
+
+Scatter plot of protein log2 fold changes (NuFANCI vs input) for the nucleolar NPM1 sort (x) against the speckle SRRM2 sort (y), coloured by significance in each comparison.
+
+**Input:** `dual_comparison_NUCL_HCT116_NPM1_FANCI_vs_NUCL_HCT116_NPM1_Input_and_NUCL_HCT116_SRRM2_FANCI_vs_NUCL_HCT116_SRRM2_Input.tsv` (FragPipe-Analyst dual comparison; in `results/`).
+**Output:** `protein_srrm2_vs_nucleoli.pdf`.
+
+
+```{r}
+library(tidyverse)
+library(ggrepel)
+# setwd("path/to/data")  # folder with the input tables (see header)
+df <- read_tsv("dual_comparison_NUCL_HCT116_NPM1_FANCI_vs_NUCL_HCT116_NPM1_Input_and_NUCL_HCT116_SRRM2_FANCI_vs_NUCL_HCT116_SRRM2_Input.tsv")
+```
+
+```{r}
+
+# Rename columns for convenience
+colnames(df)[colnames(df) == "log2FC_NUCL_HCT116_NPM1_FANCI_vs_NUCL_HCT116_NPM1_Input"]   <- "x"
+colnames(df)[colnames(df) == "log2FC_NUCL_HCT116_SRRM2_FANCI_vs_NUCL_HCT116_SRRM2_Input"] <- "y"
+
+# Genes to label
+genes_to_label <- c("NPM1", "SRRM2", "FBL", "SON", "POLR2A", "POLR1G", "NOL10")
+
+# Count points per status (for labels), excluding NAs on either axis
+status_counts <- df %>%
+  filter(!is.na(x) | !is.na(y)) %>%
+  count(status) %>%
+  mutate(label = paste0(status, "\n(n = ", n, ")"))
+
+# Merge counts back for legend labels
+df <- df %>%
+  left_join(status_counts %>% select(status, label), by = "status")
+
+# Define colors per status
+status_colors <- c(
+  "Both significant"                                          = "#E63946",
+  "Only NUCL_HCT116_NPM1_FANCI_vs_NUCL_HCT116_NPM1_Input"   = "#457B9D",
+  "Only NUCL_HCT116_SRRM2_FANCI_vs_NUCL_HCT116_SRRM2_Input" = "#2A9D8F",
+  "Not significant"                                           = "grey70"
+)
+
+# Build label-to-color mapping
+label_colors <- setNames(
+  status_colors[status_counts$status],
+  status_counts$label
+)
+
+# Subset of rows to label
+df_labels <- df %>%
+  filter(name %in% genes_to_label, !is.na(x), !is.na(y))
+
+# Plot (Not significant first so colored points render on top)
+df_ordered <- df %>%
+  arrange(status == "Not significant")
+```
+```{r fig.height=10, fig.width=10}
+p <- ggplot(df_ordered, aes(x = x, y = y, color = label)) +
+  geom_point(alpha = 0.6, size = 1.5, na.rm = TRUE) +
+  geom_text_repel(
+    data        = df_labels,
+    aes(label   = name),
+    color       = "black",
+    size        = 3,
+    fontface    = "bold",
+    box.padding = 0.5,
+    max.overlaps = Inf,
+    segment.color = "grey40",
+    segment.size  = 0.3
+  ) +
+  scale_color_manual(values = label_colors, name = "Status") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "black", linewidth = 0.4) +
+  geom_vline(xintercept = 0, linetype = "dashed", color = "black", linewidth = 0.4) +
+  labs(
+    x     = "log2FC  NPM1 FANCI vs NPM1 Input",
+    y     = "log2FC  SRRM2 FANCI vs SRRM2 Input",
+    title = "Dual comparison scatter plot"
+  ) +
+  theme_bw(base_size = 12) +
+  theme(
+    legend.position  = "right",
+    legend.key.size  = unit(0.5, "cm"),
+    panel.grid.minor = element_blank()
+  ) + theme(aspect.ratio=1)
+
+print(p)
+ggsave("protein_srrm2_vs_nucleoli.pdf")
+```
+

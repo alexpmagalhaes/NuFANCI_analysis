@@ -1,0 +1,165 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+library(tidyverse)
+setwd("/Users/magalhae/Desktop/FANCY_DNAcaller/FANCI_DNAseq_T2T_CHM3/NPKL_SAD_genes/counts")
+```
+```{r}
+df <- read_csv("Ranking_SADs.csv")
+```
+```{r}
+data_no_symbol <- df %>%
+  filter(is.na(gene_symbol) | gene_symbol == "")
+```
+```{r}
+# 3. Separate and process rows with a gene_symbol
+data_with_symbol_processed <- df %>%
+  # Keep only rows that have a gene symbol
+  filter(!is.na(gene_symbol) & gene_symbol != "") %>%
+  # Group by the gene symbol to perform calculations on each gene
+  group_by(gene_symbol) %>%
+  # Create a new column with the sum of TPM for the entire group
+  #mutate(TPM_sum = sum(TPM)) %>%
+  # Within each group, keep only the single row with the highest original TPM
+  slice_max(order_by = TPM, n = 1, with_ties = FALSE) %>%
+  # Replace the original TPM with the summed TPM
+  # mutate(TPM = TPM_sum) %>%
+  # Remove the temporary helper column
+  # select(-TPM_sum) %>%
+  # Ungroup to finish
+  ungroup()
+final_df <- bind_rows(data_with_symbol_processed, data_no_symbol)
+```
+
+```{r}
+final_df$Log2TPM = log2(final_df$TPM+1)
+final_df <- final_df %>%
+  arrange(desc(TPM)) %>%
+  mutate(Ranking = row_number())
+final_df <- final_df %>%
+  arrange(desc(Cov_MAX_DNA)) %>%
+  mutate(DNA_covRanking = row_number())
+```
+
+```{r}
+write_csv(final_df, "final_df.csv")
+```
+
+
+```{r}
+df2 <- filter(final_df, NumReads > 0 )
+df2 <- filter(df2, !gene_biotype == 'scRNA' )
+df2 <- filter(df2, !gene_biotype == 'scaRNA' )
+df2 <- filter(df2, !gene_biotype == 'miRNA' )
+```
+
+```{r fig.height=3, fig.width=12}
+graph <- ggplot(df2, aes(y = DNA_covRanking, x = Ranking, colour = Type)) +
+  #geom_hdr() +
+  geom_point() +
+  # facet_grid( . ~ gene_biotype, scales = "free") +
+  theme_bw() + 
+  theme(aspect.ratio = 1)
+graph
+```
+
+```{r fig.height=12, fig.width=12}
+ggplot(df2, aes(x = gene_biotype, y = Log2TPM, fill = Type)) +
+  introdataviz::geom_split_violin(alpha = .4, trim = FALSE,scale = "width") +
+  geom_boxplot(width = .2, alpha = .6, fatten = NULL, show.legend = FALSE, outliers = T) +
+  stat_summary(fun.data = "mean_se", geom = "pointrange", show.legend = F, 
+               position = position_dodge(.175)) +
+  facet_grid(gene_biotype ~ ., scales = "free" ) +
+  # scale_x_discrete(name = "Condition", labels = c("Non-word", "Word")) +
+  # scale_y_continuous(name = "Reaction time (ms)",
+  #                    breaks = seq(200, 800, 100), 
+  #                    limits = c(200, 800)) +
+  scale_fill_brewer(palette = "Dark2", name = "Gene type") +
+  theme_minimal()
+```
+```{r fig.height=12, fig.width=12}
+ggplot(df2, aes(x = gene_biotype, y = Cov_MAX_DNA, fill = Type)) +
+  introdataviz::geom_split_violin(alpha = .4, trim = FALSE,scale = "width") +
+  geom_boxplot(width = .2, alpha = .6, fatten = NULL, show.legend = FALSE) +
+  stat_summary(fun.data = "mean_se", geom = "pointrange", show.legend = F, 
+               position = position_dodge(.175)) +
+  facet_grid(gene_biotype ~ ., scales = "free" ) +
+  # scale_x_discrete(name = "Condition", labels = c("Non-word", "Word")) +
+  # scale_y_continuous(name = "Reaction time (ms)",
+  #                    breaks = seq(200, 800, 100), 
+  #                    limits = c(200, 800)) +
+  scale_fill_brewer(palette = "Dark2", name = "Gene type") +
+  theme_minimal()
+```
+```{r fig.height=3, fig.width=12}
+graph <- ggplot(df2, aes(x = Log2TPM, y = Cov_MAX_DNA, colour = Type)) +
+  #geom_hdr() +
+  geom_point() +
+  facet_grid( . ~ gene_biotype, scales = "free") +
+  theme(aspect.ratio = 1) +
+  theme_bw()
+graph
+```
+```{r fig.height=3, fig.width=12}
+graph <- ggplot(df2, aes(y = Log2TPM, x = Cov_MAX_DNA, colour = Type)) +
+  #geom_hdr() +
+  geom_point() +
+  facet_grid( . ~ gene_biotype, scales = "free") +
+  theme(aspect.ratio = 1) +
+  theme_bw()
+graph
+```
+```{r fig.height=3, fig.width=12}
+graph <- ggplot(df2, aes(x = Cov_MAX_DNA, fill = Type)) +
+  geom_density(position = 'stack', alpha = 0.8, adjust = 1) +
+  facet_grid(. ~ gene_biotype,) +
+  theme(aspect.ratio = 1) +
+  theme_bw()
+graph
+```
+```{r fig.height=3, fig.width=11}
+graph <- df2 %>% ggplot(aes(x = Log2TPM, fill = Type)) +
+  geom_density(position = 'stack', alpha = 0.8, adjust = 1) +
+  facet_grid( . ~ gene_biotype, scales = "free_x") +
+  theme(aspect.ratio = 1) +
+  theme_bw()
+graph
+```
+
+```{r}
+df <- read_csv("Ranking_SADs.csv")
+```
+
+
+```{r}
+# The code below will generate the graph:
+graph <- ggplot(df, aes(x = Ranking, y = Log2TPM, colour = Type)) +
+  geom_point() +
+  theme_bw()
+graph
+
+# If you would like to save your graph, you can use:
+ggsave('Ranking_all.pdf', graph, width = 14, height = 14, units = 'cm')
+```
+
+
+```{r}
+df2 <- filter(df, gene_biotype == "protein_coding")
+# The code below will generate the graph:
+graph <- ggplot(df2, aes(x = Ranking, y = Log2TPM, colour = Type)) +
+  geom_point() +
+  theme_bw()
+graph
+
+# If you would like to save your graph, you can use:
+ggsave('Ranking_proteincoding.pdf', graph, width = 14, height = 14, units = 'cm')
+```
+
+```

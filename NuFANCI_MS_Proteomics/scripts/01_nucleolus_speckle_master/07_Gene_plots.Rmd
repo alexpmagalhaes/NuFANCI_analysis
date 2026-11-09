@@ -1,0 +1,52 @@
+---
+title: "Intensity of selected proteins per condition"
+output: html_notebook
+---
+
+Box plots of normalised intensities (FragPipe-Analyst) of selected proteins (YY1, DDX41, MKI67, MDN1, NPM1) per condition.
+
+**Input:** `combined_protein_f.tsv`, `Normalized_matrix.csv`, `experiment_annotation.tsv` (public repository).
+**Output:** `Marker_gene_ActD.pdf`.
+**Note:** taken from the 2025-10-19 analysis.
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+# setwd("path/to/data")  # folder with the input tables (see header)
+library(tidyverse)
+library(RColorBrewer)
+library(dendextend)
+library(viridis)
+library(gridExtra)
+library(grid)
+library(cowplot)
+library(ggpubr)
+library(ggprism)
+```
+
+```{r}
+comb_matrix = read_tsv("combined_protein_f.tsv") %>% rename(., ProteinID = 'Protein ID', EntryName = 'Entry Name') 
+Norm_Matrix = read_csv("Normalized_matrix.csv")  %>% rename_with(~str_remove(., ' MaxLFQ.Intensity_normalized_intensity'))
+annotation = read_tsv("experiment_annotation.tsv")
+```
+```{r}
+cvs_group<- Norm_Matrix %>%  dplyr::left_join(.,comb_matrix[2:4], by="ProteinID")  %>%
+      tidyr::gather("sample", "Intensity", -Gene, -ProteinID, -EntryName)  %>%
+      dplyr::left_join(.,annotation, by="sample")
+```
+
+```{r fig.height=44, fig.width=10}
+
+ p <- cvs_group %>% filter(Gene == "YY1" | Gene == "DDX41" | Gene == "MKI67" | Gene == "MDN1" | Gene == "NPM1") %>% ggboxplot(., x = "condition", y = "Intensity",
+                color = "condition",
+                add = "jitter") +
+                facet_grid( Gene ~ ., scales = "free") +
+                #theme_prism() +
+                  theme(legend.position = "none",
+                        aspect.ratio = 1,
+                      axis.text.x = element_text(angle = 90, hjust = 1)
+                    )
+ p
+ggsave2("Marker_gene_ActD.pdf")
+
+```
+

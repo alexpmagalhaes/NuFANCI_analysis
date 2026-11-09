@@ -1,0 +1,49 @@
+dataset	sample	cell_line	fraction	condition	replicate	library
+NUCL_RNA	NUC_RNA_FANCI_rep1	HCT116	nucleoli	-	1	total RNA-seq, paired-end, reverse-stranded
+NUCL_RNA	NUC_RNA_FANCI_rep2	HCT116	nucleoli	-	2	total RNA-seq, paired-end, reverse-stranded
+NUCL_RNA	NUC_RNA_FANCI_rep3	HCT116	nucleoli	-	3	total RNA-seq, paired-end, reverse-stranded
+NUCL_RNA	NUC_RNA_FANCI_rep4	HCT116	nucleoli	-	4	total RNA-seq, paired-end, reverse-stranded
+NUCL_RNA	NUC_RNA_FANCI_rep5	HCT116	nucleoli	-	5	total RNA-seq, paired-end, reverse-stranded
+NUCL_RNA	NUC_RNA_Input_rep1	HCT116	input	-	1	total RNA-seq, paired-end, reverse-stranded
+NUCL_RNA	NUC_RNA_Input_rep2	HCT116	input	-	2	total RNA-seq, paired-end, reverse-stranded
+NUCL_RNA	NUC_RNA_Input_rep3	HCT116	input	-	3	total RNA-seq, paired-end, reverse-stranded
+NUCL_RNA	NUC_RNA_Input_rep4	HCT116	input	-	4	total RNA-seq, paired-end, reverse-stranded
+NUCL_RNA	NUC_RNA_Input_rep5	HCT116	input	-	5	total RNA-seq, paired-end, reverse-stranded
+NPKL_RNA	NPKL_RNA_FANCI_rep1	HCT116	nuclear_speckles	-	1	total RNA-seq, paired-end, reverse-stranded
+NPKL_RNA	NPKL_RNA_FANCI_rep2	HCT116	nuclear_speckles	-	2	total RNA-seq, paired-end, reverse-stranded
+NPKL_RNA	NPKL_RNA_FANCI_rep3	HCT116	nuclear_speckles	-	3	total RNA-seq, paired-end, reverse-stranded
+NPKL_RNA	NPKL_RNA_FANCI_rep4	HCT116	nuclear_speckles	-	4	total RNA-seq, paired-end, reverse-stranded
+NPKL_RNA	NPKL_RNA_FANCI_rep5	HCT116	nuclear_speckles	-	5	total RNA-seq, paired-end, reverse-stranded
+NPKL_RNA	NPKL_RNA_Input_rep1	HCT116	input	-	1	total RNA-seq, paired-end, reverse-stranded
+NPKL_RNA	NPKL_RNA_Input_rep2	HCT116	input	-	2	total RNA-seq, paired-end, reverse-stranded
+NPKL_RNA	NPKL_RNA_Input_rep3	HCT116	input	-	3	total RNA-seq, paired-end, reverse-stranded
+NPKL_RNA	NPKL_RNA_Input_rep4	HCT116	input	-	4	total RNA-seq, paired-end, reverse-stranded
+NPKL_RNA	NPKL_RNA_Input_rep5	HCT116	input	-	5	total RNA-seq, paired-end, reverse-stranded
+NPKL_SMARTseq_nbGFP	FANCI_nbGFP_2xKS_Dox_HCT116_Pb_rep1	HCT116	nuclear_speckles	Dox	1	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_nbGFP	FANCI_nbGFP_2xKS_Dox_HCT116_Pb_rep2	HCT116	nuclear_speckles	Dox	2	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_nbGFP	FANCI_nbGFP_2xKS_Dox_HCT116_Pb_rep3	HCT116	nuclear_speckles	Dox	3	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_nbGFP	FANCI_nbGFP_2xKS_noDox_HCT116_Pb_rep1	HCT116	nuclear_speckles	noDox	1	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_nbGFP	FANCI_nbGFP_2xKS_noDox_HCT116_Pb_rep2	HCT116	nuclear_speckles	noDox	2	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_nbGFP	FANCI_nbGFP_2xKS_noDox_HCT116_Pb_rep3	HCT116	nuclear_speckles	noDox	3	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_nbGFP	Input_nbGFP_2xKS_Dox_HCT116_Pb_rep1	HCT116	input	Dox	1	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_nbGFP	Input_nbGFP_2xKS_Dox_HCT116_Pb_rep2	HCT116	input	Dox	2	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_nbGFP	Input_nbGFP_2xKS_Dox_HCT116_Pb_rep3	HCT116	input	Dox	3	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_nbGFP	Input_nbGFP_2xKS_noDox_HCT116_Pb_rep1	HCT116	input	noDox	1	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_nbGFP	Input_nbGFP_2xKS_noDox_HCT116_Pb_rep2	HCT116	input	noDox	2	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_nbGFP	Input_nbGFP_2xKS_noDox_HCT116_Pb_rep3	HCT116	input	noDox	3	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_ActD	HCT116_DMSO_FANCI_rep1	HCT116	nuclear_speckles	DMSO	1	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_ActD	HCT116_DMSO_FANCI_rep2	HCT116	nuclear_speckles	DMSO	2	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_ActD	HCT116_DMSO_FANCI_rep3	HCT116	nuclear_speckles	DMSO	3	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_ActD	HCT116_DMSO_FANCI_rep4	HCT116	nuclear_speckles	DMSO	4	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_ActD	HCT116_ActD_FANCI_rep1	HCT116	nuclear_speckles	ActD	1	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_ActD	HCT116_ActD_FANCI_rep2	HCT116	nuclear_speckles	ActD	2	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_ActD	HCT116_ActD_FANCI_rep3	HCT116	nuclear_speckles	ActD	3	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_ActD	HCT116_ActD_FANCI_rep4	HCT116	nuclear_speckles	ActD	4	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_ActD	HCT116_DMSO_Input_rep1	HCT116	input	DMSO	1	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_ActD	HCT116_DMSO_Input_rep2	HCT116	input	DMSO	2	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_ActD	HCT116_DMSO_Input_rep3	HCT116	input	DMSO	3	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_ActD	HCT116_DMSO_Input_rep4	HCT116	input	DMSO	4	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_ActD	HCT116_ActD_Input_rep1	HCT116	input	ActD	1	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_ActD	HCT116_ActD_Input_rep2	HCT116	input	ActD	2	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_ActD	HCT116_ActD_Input_rep3	HCT116	input	ActD	3	SMART-seq, paired-end, UMI
+NPKL_SMARTseq_ActD	HCT116_ActD_Input_rep4	HCT116	input	ActD	4	SMART-seq, paired-end, UMI

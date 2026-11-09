@@ -1,0 +1,173 @@
+---
+title: "GO enrichment: nucleolus vs speckle NuFANCI"
+output: html_notebook
+---
+
+GO Molecular Function and Biological Process enrichment (Enrichr 2023 libraries, FragPipe-Analyst enrichment functions) of the nucleolus-enriched (blue), speckle-enriched (red) and selected (step 03) proteins.
+
+**Input:** `Volcano_NPKL_vs_NUCL_Data.csv` (step 02), `filtered_results_GreyDots_plus5values.csv` (step 03). Requires FragPipe-Analyst cloned in `~/FragPipe-Analyst` (commit 3e1af92).
+**Output:** `GOMF_*.pdf`, `GOBP_*.pdf`.
+
+
+```{r}
+library(tidyverse)
+source("~/FragPipe-Analyst/R/enrichment_functions.R")
+source("~/FragPipe-Analyst/global.R")
+# setwd("path/to/data")  # folder with the input tables (see header)
+```
+```{r}
+Volcano_NPKL_vs_NUCL_Data <- read_csv("Volcano_NPKL_vs_NUCL_Data.csv")
+filtered_results_GreyDots_plus5values <- read_csv("filtered_results_GreyDots_plus5values.csv")
+```
+```{r}
+Nucleolus <- Volcano_NPKL_vs_NUCL_Data %>% filter(color=="blue")
+Nucleolus = Nucleolus$`Protein ID`
+Nspekles <- Volcano_NPKL_vs_NUCL_Data %>% filter(color=="red")
+Nspekles = Nspekles$`Protein ID`
+
+```
+
+```{r}
+library(biomaRt)
+library(UniProt.ws)
+library(EnsDb.Hsapiens.v86)
+#mart <- useMart("ensembl", dataset = "mmusculus_gene_ensembl") # mouse
+mart <- useMart("ensembl", dataset = "hsapiens_gene_ensembl") # human
+
+# Nucleolus_gene_id <- getBM(c("ensembl_gene_id","uniprot_gn_id"), "uniprot_gn_id", Nucleolus, mart)
+# Nspekles_gene_id <- getBM(c("ensembl_gene_id","uniprot_gn_id"), "uniprot_gn_id", Nspekles, mart)
+GreyDots_plus5values <- getBM(c("ensembl_gene_id","uniprot_gn_id"), "uniprot_gn_id", filtered_results_GreyDots_plus5values$ProteinID, mart)
+
+```
+```{r}
+GOMF_GreyDots_plus5values <- enrichr_mod(GreyDots_plus5values$ensembl_gene_id, "GO_Molecular_Function_2023" )
+GOBP_GreyDots_plus5values <- enrichr_mod(GreyDots_plus5values$ensembl_gene_id, "GO_Biological_Process_2023" )
+GOMF_GreyDots_plus5values = GOMF_GreyDots_plus5values$GO_Molecular_Function_2023
+GOBP_GreyDots_plus5values = GOBP_GreyDots_plus5values$GO_Biological_Process_2023
+```
+
+```{r}
+GOMF_Nucleolus <- enrichr_mod(Nucleolus_gene_id$ensembl_gene_id, "GO_Molecular_Function_2023" )
+GOBP_Nucleolus <- enrichr_mod(Nucleolus_gene_id$ensembl_gene_id, "GO_Biological_Process_2023" )
+GOMF_Nucleolus = GOMF_Nucleolus$GO_Molecular_Function_2023
+GOBP_Nucleolus = GOBP_Nucleolus$GO_Biological_Process_2023
+
+GOMF_Nspekles <- enrichr_mod(Nspekles_gene_id$ensembl_gene_id, "GO_Molecular_Function_2023" )
+GOBP_Nspekles <- enrichr_mod(Nspekles_gene_id$ensembl_gene_id, "GO_Biological_Process_2023" )
+GOMF_Nspekles = GOMF_Nspekles$GO_Molecular_Function_2023
+GOBP_Nspekles = GOBP_Nspekles$GO_Biological_Process_2023
+
+```
+```{r}
+terms_GOMF_GreyDots_plus5values <- GOMF_GreyDots_plus5values %>%
+  dplyr::filter(Adjusted.P.value <= 0.5) %>%
+  dplyr::arrange(Adjusted.P.value) %>%
+  dplyr::slice(seq_len(10)) %>%
+  mutate(IN = as.numeric(gsub("/.*", "", Overlap)))
+
+ggplot(terms_GOMF_GreyDots_plus5values, aes(y = reorder(Term, Odds.Ratio), x=log2(Odds.Ratio), size=IN, color=Adjusted.P.value)) +
+                 geom_point() +
+                 scale_color_continuous(high = "#487db5", low="#d16e67", name = "P.value",
+                                        guide=guide_colorbar(reverse=T,
+                                                             label.theme = element_text(angle = 90),
+                                                             label.vjust = 0.5)) +
+                 labs(y = "Term", x = "log2 Odds ratio", size = "size") +
+                 theme_bw() +
+                 theme(legend.position = "top", legend.text = element_text(size = 9), aspect.ratio=2/1)
+ggsave("GOMF_GreyDots_plus5values.pdf")
+```
+
+```{r}
+terms_GOBP_GreyDots_plus5values <- GOBP_GreyDots_plus5values %>%
+  dplyr::filter(Adjusted.P.value <= 0.5) %>%
+  dplyr::arrange(Adjusted.P.value) %>%
+  dplyr::slice(seq_len(10)) %>%
+  mutate(IN = as.numeric(gsub("/.*", "", Overlap)))
+
+ggplot(terms_GOBP_GreyDots_plus5values, aes(y = reorder(Term, Odds.Ratio), x=log2(Odds.Ratio), size=IN, color=Adjusted.P.value)) +
+                 geom_point() +
+                 scale_color_continuous(high = "#487db5", low="#d16e67", name = "P.value",
+                                        guide=guide_colorbar(reverse=T,
+                                                             label.theme = element_text(angle = 90),
+                                                             label.vjust = 0.5)) +
+                 labs(y = "Term", x = "log2 Odds ratio", size = "size") +
+                 theme_bw() +
+                 theme(legend.position = "top", legend.text = element_text(size = 9), aspect.ratio=2/1)
+ggsave("GOBP_GreyDots_plus5values.pdf")
+```
+
+
+
+
+```{r}
+terms_Nucleolus <- GOBP_Nucleolus %>%
+  dplyr::filter(Adjusted.P.value <= 0.5) %>%
+  dplyr::arrange(Adjusted.P.value) %>%
+  dplyr::slice(seq_len(10)) %>%
+  mutate(IN = as.numeric(gsub("/.*", "", Overlap)))
+
+ggplot(terms_Nucleolus, aes(y = reorder(Term, Odds.Ratio), x=log2(Odds.Ratio), size=IN, color=Adjusted.P.value)) +
+                 geom_point() +
+                 scale_color_continuous(high = "#487db5", low="#d16e67", name = "P.value",
+                                        guide=guide_colorbar(reverse=T,
+                                                             label.theme = element_text(angle = 90),
+                                                             label.vjust = 0.5)) +
+                 labs(y = "Term", x = "log2 Odds ratio", size = "size") +
+                 theme_bw() +
+                 theme(legend.position = "top", legend.text = element_text(size = 9), aspect.ratio=2/1)
+ggsave("GOBP_Nucleolus.pdf")
+```
+```{r}
+terms_Nucleolus <- GOMF_Nucleolus %>%
+  dplyr::filter(Adjusted.P.value <= 0.5) %>%
+  dplyr::arrange(Adjusted.P.value) %>%
+  dplyr::slice(seq_len(10))%>%
+  mutate(IN = as.numeric(gsub("/.*", "", Overlap)))
+
+ggplot(terms_Nucleolus, aes(y = reorder(Term, Odds.Ratio), x=log2(Odds.Ratio), size=IN, color=Adjusted.P.value)) +
+                 geom_point() +
+                 scale_color_continuous(high = "#487db5", low="#d16e67", name = "P.value",
+                                        guide=guide_colorbar(reverse=T,
+                                                             label.theme = element_text(angle = 90),
+                                                             label.vjust = 0.5)) +
+                 labs(y = "Term", x = "log2 Odds ratio", size = "size") +
+                 theme_bw() +
+                 theme(legend.position = "top", legend.text = element_text(size = 9), aspect.ratio=2/1)
+ggsave("GOMF_Nucleolus.pdf")
+```
+```{r}
+terms_Nspekles <- GOMF_Nspekles %>%
+  dplyr::filter(Adjusted.P.value <= 0.5) %>%
+  dplyr::arrange(Adjusted.P.value) %>%
+  dplyr::slice(seq_len(10))%>%
+  mutate(IN = as.numeric(gsub("/.*", "", Overlap)))
+
+ggplot(terms_Nspekles, aes(y = reorder(Term, Odds.Ratio), x=log2(Odds.Ratio), size=IN, color=Adjusted.P.value)) +
+                 geom_point() +
+                 scale_color_continuous(high = "#487db5", low="#d16e67", name = "P.value",
+                                        guide=guide_colorbar(reverse=T,
+                                                             label.theme = element_text(angle = 90),
+                                                             label.vjust = 0.5)) +
+                 labs(y = "Term", x = "log2 Odds ratio", size = "size") +
+                 theme_bw() +
+                 theme(legend.position = "top", legend.text = element_text(size = 9), aspect.ratio=2/1)
+ggsave("GOMF_Nspekles.pdf")
+```
+```{r}
+terms_Nspekles <- GOBP_Nspekles %>%
+  dplyr::filter(Adjusted.P.value <= 0.5) %>%
+  dplyr::arrange(Adjusted.P.value) %>%
+  dplyr::slice(seq_len(10))%>%
+  mutate(IN = as.numeric(gsub("/.*", "", Overlap)))
+
+ggplot(terms_Nspekles, aes(y = reorder(Term, Odds.Ratio), x=log2(Odds.Ratio), size=IN, color=Adjusted.P.value)) +
+                 geom_point() +
+                 scale_color_continuous(high = "#487db5", low="#d16e67", name = "P.value",
+                                        guide=guide_colorbar(reverse=T,
+                                                             label.theme = element_text(angle = 90),
+                                                             label.vjust = 0.5)) +
+                 labs(y = "Term", x = "log2 Odds ratio", size = "size") +
+                 theme_bw() +
+                 theme(legend.position = "top", legend.text = element_text(size = 9), aspect.ratio=2/1)
+ggsave("GOBP_Nspekles.pdf")
+```

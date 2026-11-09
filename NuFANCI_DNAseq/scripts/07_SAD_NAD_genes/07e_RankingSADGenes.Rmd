@@ -1,0 +1,252 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+```{r}
+library(tidyverse)
+library(ggprism)
+library(ggpubr)
+library("DGEobj.utils")
+setwd("/Users/magalhae/Desktop/FANCY_DNAcaller/FANCI_DNAseq_T2T_CHM3/NPKL_SAD_genes/counts")
+```
+
+```{r}
+NPKL_RNA_quant <- read_tsv("/Users/magalhae/Desktop/FANCY_DNAcaller/FANCI_DNAseq_T2T_CHM3/NPKL_SAD_genes/counts/chm13.draft_v2.0.gene.counts.tsv") %>% column_to_rownames('Geneid')
+
+```
+```{r}
+keepCol = c('NPKL_RNA_FANCI_rep2', 'NPKL_RNA_FANCI_rep4', 'NPKL_RNA_FANCI_rep5', 'NPKL_RNA_Input_rep2', 'NPKL_RNA_Input_rep4', 'NPKL_RNA_Input_rep5')
+countsMatrix = as.matrix(NPKL_RNA_quant[keepCol])
+geneLength = NPKL_RNA_quant$Length
+NPKL_RNA_quant_TPM <- convertCounts(
+  countsMatrix,
+  unit = "tpm",
+  geneLength,
+  log = FALSE,
+  normalize = "none",
+  prior.count = NULL
+)
+NPKL_RNA_quant_TPM = as_tibble(NPKL_RNA_quant_TPM, rownames = "Geneid")
+write_csv(NPKL_RNA_quant_TPM, file = "NPKL_RNA_quant_TPM.csv")
+```
+
+```{r}
+df <- read_csv("/Users/magalhae/Desktop/FANCY_DNAcaller/FANCI_DNAseq_T2T_CHM3/NPKL_SAD_genes/Gene_cov_analysis_masterDF.csv")
+```
+```{r}
+df2 = df
+df2 <- filter(df, NPKL_RNA_FANCI > 0)
+df2 <- filter(df2, NPKL_DNA_FANCI_sum > 0 )
+df2 <- filter(df2, !gene_biotype == 'scRNA' )
+df2 <- filter(df2, !gene_biotype == 'scaRNA' )
+df2 <- filter(df2, !gene_biotype == 'miRNA' )
+df2 <- filter(df2, !gene_biotype == 'sRNA' )
+df2 <- filter(df2, !seq_id == 'chrX')
+df2 <- filter(df2, !seq_id == 'chrM')
+df2 <- filter(df2, !seq_id == 'chrY')
+```
+
+```{r}
+df2 <- arrange(df2, desc(NPKL_DNA_FANCI_max)) %>%
+          mutate(NPKL_DNA_FANCI_max_rank = 1:nrow(df2))
+
+df2 <- arrange(df2, desc(NPKL_RNA_FANCI)) %>%
+          mutate(NPKL_RNA_FANCI_rank = 1:nrow(df2))
+
+df2 <- arrange(df2, desc(NPKL_RNA_Input)) %>%
+          mutate(NPKL_RNA_Input_rank = 1:nrow(df2))
+```
+
+
+```{r fig.height=3, fig.width=12}
+graph <- ggplot(df2, aes(x = log2NPKL_RNA_FANCI, y = log2NPKL_DNA_FANCI_mean, color = Type)) +
+  #geom_hdr() +
+  geom_point() +
+  facet_grid( . ~ gene_biotype, scales = "free") +
+  theme(aspect.ratio = 1) +
+  theme_bw()
+graph
+```
+```{r fig.height=3, fig.width=12}
+graph <- df2 %>% filter(Type == 'Other' ) %>% ggplot(aes(y = log2NPKL_RNA_FANCI, x = log2NPKL_RNA_Input, color = Type)) +
+  geom_point() +
+  facet_grid( . ~ gene_biotype, scales = "free") +
+  geom_abline(intercept = 0, slope = 1, size = 0.5) +
+  geom_smooth(method='lm', formula= y~x+0) +
+  stat_regline_equation(label.x=7, label.y=4) + 
+  stat_cor(aes(label=..rr.label..), label.x=7, label.y=3) + 
+  theme(aspect.ratio = 1) +
+  xlim(0,15) + ylim(0,15) + 
+  theme_bw()
+graph
+```
+```{r fig.height=3, fig.width=12}
+graph <- df2 %>% filter(Type == 'NAD' ) %>% ggplot(aes(y = log2NPKL_RNA_FANCI, x = log2NPKL_RNA_Input, color = Type)) +
+  geom_point() +
+  facet_grid( . ~ gene_biotype, scales = "free") +
+  geom_abline(intercept = 0, slope = 1, size = 0.5) +
+  geom_smooth(method='lm', formula= y~x+0) +
+  stat_regline_equation(label.x=8, label.y=5) + 
+  stat_cor(aes(label=..rr.label..), label.x=8, label.y=4) + 
+  theme(aspect.ratio = 1) +
+  xlim(0,15) + ylim(0,15) + 
+  theme_bw()
+graph
+```
+
+```{r fig.height=3, fig.width=12}
+graph <- df2 %>% filter(Type == 'SAD' ) %>% ggplot(aes(y = log2NPKL_RNA_FANCI, x = log2NPKL_RNA_Input, color = Type)) +
+  geom_point() +
+  facet_grid( . ~ gene_biotype, scales = "free") +
+  geom_abline(intercept = 0, slope = 1, size = 0.5) +
+  geom_smooth(method='lm', formula= y~x+0) +
+  stat_regline_equation(label.x=8, label.y=5) + 
+  stat_cor(aes(label=..rr.label..), label.x=8, label.y=4) + 
+  theme(aspect.ratio = 1) +
+  xlim(0,15) + ylim(0,15) + 
+  theme_bw()
+graph
+```
+```{r fig.height=3, fig.width=12}
+graph <- df2 %>% filter(Type == 'SAD' ) %>% ggplot(aes(y = log2NPKL_RNA_Input, x = log2NPKL_DNA_FANCI_max, color = Type)) +
+  geom_point() +
+  facet_grid( . ~ gene_biotype, scales = "free") +
+  geom_abline(intercept = 0, slope = 1, size = 0.5) +
+  theme(aspect.ratio = 1) +
+  geom_smooth(method='lm', formula= y~x+0) +
+  stat_regline_equation(label.x=2, label.y=15) + 
+  stat_cor(aes(label=..rr.label..), label.x=2, label.y=14) + 
+  xlim(0,5) + ylim(0,15) + 
+  theme_bw()
+graph
+```
+```{r fig.height=3, fig.width=12}
+graph <- df2 %>% filter(Type == 'NAD' ) %>% ggplot(aes(y = log2NPKL_RNA_Input, x = log2NPKL_DNA_FANCI_max, color = Type)) +
+  geom_point() +
+  facet_grid( . ~ gene_biotype, scales = "free") +
+  geom_abline(intercept = 0, slope = 1, size = 0.5) +
+  theme(aspect.ratio = 1) +
+  geom_smooth(method='lm', formula= y~x+0) +
+  stat_regline_equation(label.x=2, label.y=15) + 
+  stat_cor(aes(label=..rr.label..), label.x=2, label.y=14) + 
+  xlim(0,5) + ylim(0,15) + 
+  theme_bw()
+graph
+```
+```{r fig.height=3, fig.width=12}
+graph <- df2 %>% filter(Type == 'Other' ) %>% ggplot(aes(y = log2NPKL_RNA_Input, x = log2NPKL_DNA_FANCI_max, color = Type)) +
+  geom_point() +
+  facet_grid( . ~ gene_biotype, scales = "free") +
+  geom_abline(intercept = 0, slope = 1, size = 0.5) +
+  theme(aspect.ratio = 1) +
+    geom_smooth(method='lm', formula= y~x+0) +
+  stat_regline_equation(label.x=2, label.y=15) + 
+  stat_cor(aes(label=..rr.label..), label.x=2, label.y=14) + 
+  xlim(0,5) + ylim(0,15) + 
+  theme_bw()
+graph
+```
+
+```{r fig.height=3, fig.width=12}
+graph <- ggplot(df2, aes(y = log2NPKL_RNA_Input, x = log2NPKL_DNA_FANCI_max, color = Type)) +
+  #geom_hdr() +
+  geom_point() +
+  facet_grid( . ~ gene_biotype, scales = "free") +
+  theme(aspect.ratio = 1) +
+  theme_bw()
+graph
+```
+```{r fig.height=3, fig.width=9}
+graph <- df2 %>% filter(!gene_biotype == 'lncRNA')  %>% ggplot(aes(x = log2NPKL_RNA_Input, fill = Type)) +
+  geom_density(position = 'identity', alpha = 0.8, adjust = 1) +
+  facet_grid(. ~ gene_biotype, scales = 'free') +
+  xlim(0,10) +
+  theme_bw()
+graph + theme(aspect.ratio = 1)
+
+
+graph <- df2 %>% filter(gene_biotype == 'lncRNA')  %>% ggplot(aes(x = log2NPKL_RNA_Input, fill = Type)) +
+  geom_density(position = 'identity', alpha = 0.8, adjust = 1) +
+  facet_grid(. ~ gene_biotype ~ ., scales = 'free') +
+  ylim(0,2.5) + xlim(0,5) +
+  theme_bw()
+graph + theme(aspect.ratio = 1)
+```
+```{r fig.height=3, fig.width=9}
+graph <- df2 %>% filter(!gene_biotype == 'lncRNA')  %>% ggplot(aes(x = log2NPKL_RNA_FANCI, fill = Type)) +
+  geom_density(position = 'identity', alpha = 0.8, adjust = 1) +
+  facet_grid(. ~ gene_biotype, scales = 'free') +
+  xlim(0,10) +
+  theme_bw()
+graph + theme(aspect.ratio = 1)
+ggsave2('log2NPKL_RNA_FANCI_dence_alltype.pdf', graph)
+```
+```{r fig.height=3, fig.width=4}
+graph <- df2 %>% filter(gene_biotype == 'lncRNA')  %>% ggplot(aes(x = log2NPKL_RNA_FANCI, fill = Type)) +
+  geom_density(position = 'identity', alpha = 0.8, adjust = 1) +
+  facet_grid(. ~ gene_biotype ~ ., scales = 'free') +
+  ylim(0,2.5) + xlim(0,5) +
+  theme_bw()
+graph + theme(aspect.ratio = 1)
+# If you would like to save your graph, you can use:
+ggsave2('log2NPKL_RNA_FANCI_dence_lncRNA.pdf', graph)
+```
+```{r}
+write_csv(df2, "Gene_cov_analysis_masterDF_filtered.csv" )
+```
+
+```{r}
+# The code below will generate the graph:
+
+# Identify the top 10 hits
+Top_Hits = head(arrange(df2,NPKL_RNA_FANCI_rank),10)
+
+graph <- ggplot(df2, aes(x = NPKL_RNA_FANCI_rank, y = log2NPKL_RNA_FANCI, colour = Type)) +
+  geom_point() +
+  geom_text(data = Top_Hits, aes(label = Name)) + 
+  theme_bw()
+graph
+
+# If you would like to save your graph, you can use:
+ggsave('Ranking_all.pdf', graph, width = 14, height = 14, units = 'cm')
+```
+```{r}
+# The code below will generate the graph:
+graph <- ggplot(df2, aes(x = NPKL_RNA_Input_rank, y = log2NPKL_RNA_Input, colour = Type)) +
+  geom_point() +
+  theme_bw()
+graph
+
+# If you would like to save your graph, you can use:
+ggsave('Ranking_all_NPKL_RNA_Input_rank.pdf', graph, width = 14, height = 14, units = 'cm')
+```
+```{r}
+# The code below will generate the graph:
+graph <- ggplot(df2, aes(x = NPKL_DNA_FANCI_max_rank, y = NPKL_DNA_FANCI_max, colour = Type)) +
+  geom_point() +
+  theme_bw()
+graph
+
+# If you would like to save your graph, you can use:
+ggsave('Ranking_all_input.pdf', graph, width = 14, height = 14, units = 'cm')
+```
+
+
+```{r}
+df2f <- filter(df2, gene_biotype == "protein_coding")
+# The code below will generate the graph:
+graph <- ggplot(df2f, aes(x = NPKL_RNA_Input_rank, y = log2NPKL_RNA_Input, colour = Type)) +
+  geom_point() +
+  theme_bw()
+graph
+
+# If you would like to save your graph, you can use:
+ggsave('Ranking_proteincoding.pdf', graph, width = 14, height = 14, units = 'cm')
+```
+
+```

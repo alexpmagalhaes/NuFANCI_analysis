@@ -1,0 +1,15 @@
+Status	NUC_RNA_FANCI_rep1.HS1_chrR.bwt2.srt.bam	NUC_RNA_FANCI_rep2.HS1_chrR.bwt2.srt.bam	NUC_RNA_FANCI_rep3.HS1_chrR.bwt2.srt.bam	NUC_RNA_FANCI_rep4.HS1_chrR.bwt2.srt.bam	NUC_RNA_FANCI_rep5.HS1_chrR.bwt2.srt.bam	NUC_RNA_Input_rep1.HS1_chrR.bwt2.srt.bam	NUC_RNA_Input_rep2.HS1_chrR.bwt2.srt.bam	NUC_RNA_Input_rep3.HS1_chrR.bwt2.srt.bam	NUC_RNA_Input_rep5.HS1_chrR.bwt2.srt.bam
+Assigned	25329567	30713733	25918500	25329922	26620031	24316074	24548727	24153541	34462293
+Unassigned_Unmapped	0	0	0	0	0	0	0	0	0
+Unassigned_Read_Type	0	0	0	0	0	0	0	0	0
+Unassigned_Singleton	0	0	0	0	0	0	0	0	0
+Unassigned_MappingQuality	0	0	0	0	0	0	0	0	0
+Unassigned_Chimera	0	0	0	0	0	0	0	0	0
+Unassigned_FragmentLength	0	0	0	0	0	0	0	0	0
+Unassigned_Duplicate	0	0	0	0	0	0	0	0	0
+Unassigned_MultiMapping	0	0	0	0	0	0	0	0	0
+Unassigned_Secondary	0	0	0	0	0	0	0	0	0
+Unassigned_NonSplit	0	0	0	0	0	0	0	0	0
+Unassigned_NoFeatures	0	0	0	0	0	0	0	0	0
+Unassigned_Overlapping_Length	0	0	0	0	0	0	0	0	0
+Unassigned_Ambiguity	144478	312108	632783	208438	318158	99633	52908	92679	160039

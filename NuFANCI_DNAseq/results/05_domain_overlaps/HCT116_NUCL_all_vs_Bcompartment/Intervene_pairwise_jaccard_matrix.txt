@@ -1,0 +1,5 @@
+	BHCT116_HiC_PC1.chm13.negative_only.merged	NUCL_HCT116_GFPNPM1_GFP_sort_merged.flt	NUC_HCT116_GFPNPM1_Ab_sort_merged.flt	NUC_HCT116_NPM1_Ab_sort_merged.flt
+BHCT116_HiC_PC1.chm13.negative_only.merged	1.0	0.456008	0.458807	0.516756
+NUCL_HCT116_GFPNPM1_GFP_sort_merged.flt	0.456008	1.0	0.886097	0.706485
+NUC_HCT116_GFPNPM1_Ab_sort_merged.flt	0.458807	0.886097	1.0	0.709639
+NUC_HCT116_NPM1_Ab_sort_merged.flt	0.516756	0.706485	0.709639	1.0

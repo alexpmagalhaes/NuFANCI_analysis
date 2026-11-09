@@ -1,0 +1,15 @@
+Status	./bam/GFPcells_Ab_sort_rep1_CHM13.bwa.srt.md.bam	./bam/GFPcells_Ab_sort_rep1_input_CHM13.bwa.srt.md.bam	./bam/GFPcells_Ab_sort_rep2_CHM13.bwa.srt.md.bam	./bam/GFPcells_Ab_sort_rep2_input_CHM13.bwa.srt.md.bam	./bam/GFPcells_GFP_sort_rep1_CHM13.bwa.srt.md.bam	./bam/GFPcells_GFP_sort_rep1_input_CHM13.bwa.srt.md.bam	./bam/GFPcells_GFP_sort_rep2_CHM13.bwa.srt.md.bam	./bam/GFPcells_GFP_sort_rep2_input_CHM13.bwa.srt.md.bam	./bam/NPKLS_Ab_sort_rep1_c50_CHM13.bwa.srt.md.bam	./bam/NPKLS_Ab_sort_rep1_c50_input_CHM13.bwa.srt.md.bam	./bam/WTcells_Ab_sort_rep1_CHM13.bwa.srt.md.bam	./bam/WTcells_Ab_sort_rep1_input_CHM13.bwa.srt.md.bam	./bam/WTcells_Ab_sort_rep2_CHM13.bwa.srt.md.bam	./bam/WTcells_Ab_sort_rep2_input_CHM13.bwa.srt.md.bam
+Assigned	130931	27804	105465	33264	183382	39617	126953	34054	12356	34719	109295	35325	75686	24817
+Unassigned_Unmapped	14896	8890	17447	10913	22138	8844	13086	9344	18677	9759	17431	16164	11231	9805
+Unassigned_Read_Type	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Singleton	152128	86528	150173	121455	220628	115003	179622	110817	33686	22053	166177	118755	92313	87360
+Unassigned_MappingQuality	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Chimera	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_FragmentLength	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Duplicate	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_MultiMapping	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Secondary	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_NonSplit	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_NoFeatures	54573703	45129251	56882983	48803612	73138848	60697848	64030623	48915567	32440593	35476845	62191946	55663955	44973105	38243709
+Unassigned_Overlapping_Length	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Unassigned_Ambiguity	231465	20268	197604	20435	305592	22515	228840	22526	18217	21101	191292	21666	138632	16989

@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+## chr 13, 14, 15, 21, 22
+
+
+##Merge BED files
+
+
+cat NUC_NPM1_Ab_sort_rep1.bed NUC_NPM1_Ab_sort_rep2.bed | sortBed | mergeBed > NUC_NPM1_Ab_sort.merged.bed
+cat NUC_GFPNPM1_Ab_sort_rep1.bed NUC_GFPNPM1_Ab_sort_rep2.bed | sortBed | mergeBed > NUC_GFPNPM1_Ab_sort.merged.bed
+cat NUC_GFPNPM1_GFP_sort_rep1.bed NUC_GFPNPM1_GFP_sort_rep2.bed | sortBed | mergeBed > NUC_GFPNPM1_GFP_sort.merged.bed
+
+
+
+bedGraphToBigWig NUC_GFPNPM1_Ab_sort_rep1_input.w50k_b1k.bedgraph chm13_chrm.sizes NUC_GFPNPM1_Ab_sort_rep1_input.w50k_b1k.bw
+bedGraphToBigWig NUC_GFPNPM1_Ab_sort_rep1.w50k_b1k.bedgraph chm13_chrm.sizes NUC_GFPNPM1_Ab_sort_rep1.w50k_b1k.bw
+bedGraphToBigWig NUC_GFPNPM1_Ab_sort_rep2_input.w50k_b1k.bedgraph chm13_chrm.sizes NUC_GFPNPM1_Ab_sort_rep2_input.w50k_b1k.bw
+bedGraphToBigWig NUC_GFPNPM1_Ab_sort_rep2.w50k_b1k.bedgraph chm13_chrm.sizes NUC_GFPNPM1_Ab_sort_rep2.w50k_b1k.bw
+bedGraphToBigWig NUC_GFPNPM1_GFP_sort_rep1_input.w50k_b1k.bedgraph chm13_chrm.sizes NUC_GFPNPM1_GFP_sort_rep1_input.w50k_b1k.bw
+bedGraphToBigWig NUC_GFPNPM1_GFP_sort_rep1.w50k_b1k.bedgraph chm13_chrm.sizes NUC_GFPNPM1_GFP_sort_rep1.w50k_b1k.bw
+bedGraphToBigWig NUC_GFPNPM1_GFP_sort_rep2_input.w50k_b1k.bedgraph chm13_chrm.sizes NUC_GFPNPM1_GFP_sort_rep2_input.w50k_b1k.bw
+bedGraphToBigWig NUC_GFPNPM1_GFP_sort_rep2.w50k_b1k.bedgraph chm13_chrm.sizes NUC_GFPNPM1_GFP_sort_rep2.w50k_b1k.bw
+bedGraphToBigWig NUC_NPM1_Ab_sort_rep1_input.w50k_b1k.bedgraph chm13_chrm.sizes NUC_NPM1_Ab_sort_rep1_input.w50k_b1k.bw
+bedGraphToBigWig NUC_NPM1_Ab_sort_rep1.w50k_b1k.bedgraph chm13_chrm.sizes NUC_NPM1_Ab_sort_rep1.w50k_b1k.bw
+bedGraphToBigWig NUC_NPM1_Ab_sort_rep2_input.w50k_b1k.bedgraph chm13_chrm.sizes NUC_NPM1_Ab_sort_rep2_input.w50k_b1k.bw
+bedGraphToBigWig NUC_NPM1_Ab_sort_rep2.w50k_b1k.bedgraph chm13_chrm.sizes NUC_NPM1_Ab_sort_rep2.w50k_b1k.bw
+
+
+
+wiggletools write_bg NUC_NPM1_Ab_sort_merged.w50k_b1k.bedGraph mean NUC_NPM1_Ab_sort_rep1.w50k_b1k.bw NUC_NPM1_Ab_sort_rep2.w50k_b1k.bw 
+wiggletools write_bg NUC_NPM1_Ab_sort_input_merged.w50k_b1k.bedGraph mean NUC_NPM1_Ab_sort_rep1_input.w50k_b1k.bw NUC_NPM1_Ab_sort_rep2_input.w50k_b1k.bw
+wiggletools write_bg NUC_GFPNPM1_GFP_sort_merged.w50k_b1k.bedGraph mean NUC_GFPNPM1_GFP_sort_rep1.w50k_b1k.bw NUC_GFPNPM1_GFP_sort_rep2.w50k_b1k.bw
+wiggletools write_bg NUC_GFPNPM1_GFP_sort_input_merged.w50k_b1k.bedGraph mean NUC_GFPNPM1_GFP_sort_rep1_input.w50k_b1k.bw NUC_GFPNPM1_GFP_sort_rep2_input.w50k_b1k.bw
+wiggletools write_bg NUC_GFPNPM1_Ab_sort_merged.w50k_b1k.bedGraph mean NUC_GFPNPM1_Ab_sort_rep1.w50k_b1k.bw NUC_GFPNPM1_Ab_sort_rep2.w50k_b1k.bw
+wiggletools write_bg NUC_GFPNPM1_Ab_sort_input_merged.w50k_b1k.bedGraph mean NUC_GFPNPM1_Ab_sort_rep1_input.w50k_b1k.bw NUC_GFPNPM1_Ab_sort_rep2_input.w50k_b1k.bw
+
+bedGraphToBigWig NUC_NPM1_Ab_sort_merged.w50k_b1k.bedGraph chm13_chrm.sizes NUC_NPM1_Ab_sort_merged.w50k_b1k.bw
+bedGraphToBigWig NUC_NPM1_Ab_sort_input_merged.w50k_b1k.bedGraph chm13_chrm.sizes NUC_NPM1_Ab_sort_input_merged.w50k_b1k.bw
+bedGraphToBigWig NUC_GFPNPM1_GFP_sort_merged.w50k_b1k.bedGraph chm13_chrm.sizes NUC_GFPNPM1_GFP_sort_merged.w50k_b1k.bw
+bedGraphToBigWig NUC_GFPNPM1_GFP_sort_input_merged.w50k_b1k.bedGraph chm13_chrm.sizes NUC_GFPNPM1_GFP_sort_input_merged.w50k_b1k.bw
+bedGraphToBigWig NUC_GFPNPM1_Ab_sort_merged.w50k_b1k.bedGraph chm13_chrm.sizes NUC_GFPNPM1_Ab_sort_merged.w50k_b1k.bw
+bedGraphToBigWig NUC_GFPNPM1_Ab_sort_input_merged.w50k_b1k.bedGraph chm13_chrm.sizes NUC_GFPNPM1_Ab_sort_input_merged.w50k_b1k.bw
